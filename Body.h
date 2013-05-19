@@ -1,8 +1,9 @@
 #pragma once
 
+#include "PhyObject.h"
 #include "IKchain.h"
 
-class Body
+class Body : public PhyObject
 {
 public:
 	Body();
@@ -10,6 +11,8 @@ public:
 
 	void drawGL();
 	void update();
+
+	void translate(vec2D v);
 private:
 	vec2D *mOrigin;
 

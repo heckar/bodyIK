@@ -1,20 +1,10 @@
 #pragma once
 
 #include <vector>
+#include "vec2D.h"
 
 #define MAX_ERROR 1.0
 #define DEFAULT_MAG 0.1
-
-struct vec2D
-{
-	vec2D(double ix=0, double iy=0)
-	{
-		x=ix;
-		y=iy;
-	}
-	double x;
-	double y;
-};
 
 class IKchain;
 
@@ -50,7 +40,7 @@ public:
 		mSegments.push_back(seg); 
 		mPositions.push_back(vec2D());
 	}
-	inline void initIKController()
+	inline void resetIK()
 	{
 		calcFK();
 		mGoal = mPositions[numSegments()];

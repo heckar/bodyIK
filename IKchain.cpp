@@ -51,20 +51,20 @@ IKchain::calcFK()
 	double *sinthetas = new double[M];
 	calcSinesCosines(sinthetas,costhetas);
 
-	double x = mOrigin->x;
-	double y = mOrigin->y;
+	double x = mOrigin->x();
+	double y = mOrigin->y();
 
 	for(unsigned int i=0; i<M; i++)
 	{
-		mPositions[i].x = x;
-		mPositions[i].y = y;
+		mPositions[i].x() = x;
+		mPositions[i].y() = y;
 
 		x += mSegments[i].mLength * costhetas[i];
 		y += mSegments[i].mLength * sinthetas[i];
 	}
 
-	mPositions[M].x = x;
-	mPositions[M].y = y;
+	mPositions[M].x() = x;
+	mPositions[M].y() = y;
 }
 
 #define ROW_MAJOR(x,y,w) x*w+y
@@ -169,12 +169,17 @@ double
 IKchain::doIKStep()
 {
 	unsigned int M = numSegments();
-	double gX = mGoal.x;
-	double gY = mGoal.y;
+	double gX = mGoal.x();
+	double gY = mGoal.y();
 
 	// Calculate G - X
-	double eX = mMagnitude * (gX - mPositions[M].x);
-	double eY = mMagnitude * (gY - mPositions[M].y);
+	double eX = mMagnitude * (gX - mPositions[M].x());
+	double eY = mMagnitude * (gY - mPositions[M].y());
+
+	// Do we need to do a step?
+	double delta = sqrt(eX*eX+eY*eY);
+	if(delta < MAX_ERROR)
+		return delta;
 
 	// Set up variables
 	double *J = new double[2*M];
@@ -222,10 +227,10 @@ IKchain::drawGL()
 		for(unsigned int i=0; i<M; i++)
 		{
 			glColor3f(0.0,0.8,0.0);
-			glVertex3f(mPositions[i].x,mPositions[i].y,0);
+			glVertex3f(mPositions[i].x(),mPositions[i].y(),0);
 
 			glColor3f(0,0,0);
-			glVertex3f(mPositions[i+1].x,mPositions[i+1].y,0);
+			glVertex3f(mPositions[i+1].x(),mPositions[i+1].y(),0);
 		}
 	}
 	glEnd();
@@ -237,7 +242,7 @@ IKchain::drawGL()
 		glColor3f(0,0,1);
 		for(unsigned int i=0; i<M; i++)
 		{
-			glVertex3f(mPositions[i].x,mPositions[i].y,0);
+			glVertex3f(mPositions[i].x(),mPositions[i].y(),0);
 		}
 	}
 	glEnd();
@@ -245,6 +250,6 @@ IKchain::drawGL()
 	glPointSize(10);
 	glColor3f(1.0,0,0);
 	glBegin(GL_POINTS);
-		glVertex2f(mGoal.x,mGoal.y);
+		glVertex2f(mGoal.x(),mGoal.y());
 	glEnd();
 }

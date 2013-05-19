@@ -184,8 +184,10 @@ void myGlutDisplay(	void )
 
 void myGlutTimer(int t)
 {
-	// Do one IK step at a specified magnitude
+	// Update IK movement
 	mBody->update();
+
+	//mBody->translate(vec2D(0,0.5));
 
 	// Reset timer
 	glutTimerFunc(100, myGlutTimer, 0);

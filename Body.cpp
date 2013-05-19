@@ -14,35 +14,36 @@ Body::Body()
 	mSpine->addSegment(20.0,0);
 	mSpine->addSegment(20.0,0);
 	mSpine->addSegment(30.0,0);
-	mSpine->initIKController();
+	mSpine->resetIK();
 
+	// Arms are children of the 3rd spine link
 	mLeftArm = new IKchain(&mSpine->mPositions[3]);
 	mLeftArm->addSegment(40.0,-M_PI);
 	mLeftArm->addSegment(70.0,M_PI/2.0);
 	mLeftArm->addSegment(70.0,-M_PI/6.0);
 	mLeftArm->addSegment(10.0,-M_PI/6.0);
-	mLeftArm->initIKController();
+	mLeftArm->resetIK();
 
 	mRightArm = new IKchain(&mSpine->mPositions[3]);
 	mRightArm->addSegment(40.0,0.0);
 	mRightArm->addSegment(70.0,-M_PI/2.0);
 	mRightArm->addSegment(70.0,M_PI/6.0);
 	mRightArm->addSegment(10.0,M_PI/6.0);
-	mRightArm->initIKController();
+	mRightArm->resetIK();
 
 	mLeftLeg = new IKchain(mOrigin);
 	mLeftLeg->addSegment(20.0,-M_PI/4.0);
 	mLeftLeg->addSegment(70.0,-M_PI/4.0);
 	mLeftLeg->addSegment(70.0,0.0);
 	mLeftLeg->addSegment(10.0,M_PI/4.0);
-	mLeftLeg->initIKController();
+	mLeftLeg->resetIK();
 
 	mRightLeg = new IKchain(mOrigin);
 	mRightLeg->addSegment(20.0,-M_PI/2.0 - M_PI/4.0);
 	mRightLeg->addSegment(70.0,M_PI/4.0);
 	mRightLeg->addSegment(70.0,0.0);
 	mRightLeg->addSegment(10.0,-M_PI/4.0);
-	mRightLeg->initIKController();
+	mRightLeg->resetIK();
 
 }
 
@@ -79,4 +80,18 @@ void Body::update()
 	mRightArm->calcFK();
 	mLeftLeg->calcFK();
 	mRightLeg->calcFK();
+}
+
+void Body::translate(vec2D v)
+{
+	// Move origin
+	*mOrigin += v;
+
+	// Move all IK controllers to match
+	// This way, IK segments act as children
+	mSpine->resetIK();
+	mLeftArm->resetIK();
+	mRightArm->resetIK();
+	mLeftLeg->resetIK();
+	mRightLeg->resetIK();
 }
