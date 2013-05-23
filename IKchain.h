@@ -3,6 +3,8 @@
 #include <vector>
 #include "vec2D.h"
 
+#define MAX_IK_DISTANCE 1.0
+#define MAX_IK_ITERS 50
 #define MAX_ERROR 1.0
 #define DEFAULT_MAG 0.1
 
@@ -60,6 +62,7 @@ private:
 
 	void calcSinesCosines(double *sines, double *cosines);
 	void calcFK();
+	void calcIK();
 	void calcJacobian(double *out);
 	void calcPseudoInverse(double *J, double *out);
 	double calcError(double dpX, double dpY, double *J, double *JPI);

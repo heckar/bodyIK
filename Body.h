@@ -13,9 +13,8 @@ public:
 	void update();
 
 	void translate(vec2D v);
-private:
-	vec2D *mOrigin;
 
+private:
 	IKchain *mSpine;
 	IKchain *mLeftArm;
 	IKchain *mRightArm;

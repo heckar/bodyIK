@@ -6,7 +6,7 @@
 #include "glut.h"
 #include "glui.h"
 
-#include "IKchain.h"
+#include "PhyObject.h"
 #include "Body.h"
 
 int	main_window;
@@ -39,8 +39,8 @@ void reset()
 	winHeight = 512;
 
 	mBody = new Body();
+	mBody->accelerate(vec2D(0,G_ACC));
 }
-
 
 void setCamera() 
 {
@@ -196,7 +196,6 @@ void myGlutTimer(int t)
 // some controls generate a callback when they are changed
 void glui_cb(int control)
 {
-
 	switch(control)
 	{
 		break;

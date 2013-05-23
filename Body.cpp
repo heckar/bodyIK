@@ -3,13 +3,23 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+#define FOR_ALL_LIMBS(f) { \
+	mSpine->f;    \
+	mLeftArm->f;  \
+	mRightArm->f; \
+	mLeftLeg->f;  \
+	mRightLeg->f; \
+}
+
 Body::Body()
 {
 	// Initialize at 0,0
-	mOrigin = new vec2D(0,0);
+	mPos = vec2D(0,0);
+	mVel = vec2D(0,0);
+	mAcc = vec2D(0,0);
 
 	// Create skeleton!
-	mSpine = new IKchain(mOrigin);
+	mSpine = new IKchain(&mPos);
 	mSpine->addSegment(20.0,M_PI/2.0);
 	mSpine->addSegment(20.0,0);
 	mSpine->addSegment(20.0,0);
@@ -31,20 +41,19 @@ Body::Body()
 	mRightArm->addSegment(10.0,M_PI/6.0);
 	mRightArm->resetIK();
 
-	mLeftLeg = new IKchain(mOrigin);
+	mLeftLeg = new IKchain(&mPos);
 	mLeftLeg->addSegment(20.0,-M_PI/4.0);
 	mLeftLeg->addSegment(70.0,-M_PI/4.0);
 	mLeftLeg->addSegment(70.0,0.0);
 	mLeftLeg->addSegment(10.0,M_PI/4.0);
 	mLeftLeg->resetIK();
 
-	mRightLeg = new IKchain(mOrigin);
+	mRightLeg = new IKchain(&mPos);
 	mRightLeg->addSegment(20.0,-M_PI/2.0 - M_PI/4.0);
 	mRightLeg->addSegment(70.0,M_PI/4.0);
 	mRightLeg->addSegment(70.0,0.0);
 	mRightLeg->addSegment(10.0,-M_PI/4.0);
 	mRightLeg->resetIK();
-
 }
 
 Body::~Body()
@@ -58,40 +67,26 @@ Body::~Body()
 
 void Body::drawGL()
 {
-	mSpine->drawGL();
-	mLeftArm->drawGL();
-	mRightArm->drawGL();
-	mLeftLeg->drawGL();
-	mRightLeg->drawGL();
+	FOR_ALL_LIMBS(drawGL());
 }
 
 void Body::update()
 {
-	// Move limbs towards IK controllers
-	mSpine->doIKStep();
-	mLeftArm->doIKStep();
-	mRightArm->doIKStep();
-	mLeftLeg->doIKStep();
-	mRightLeg->doIKStep();
+	// Move
+	translate(mVel);
+	mVel += mAcc;
 
-	// Calculate positions using FK
-	mSpine->calcFK();
-	mLeftArm->calcFK();
-	mRightArm->calcFK();
-	mLeftLeg->calcFK();
-	mRightLeg->calcFK();
+	FOR_ALL_LIMBS(calcIK());
 }
 
 void Body::translate(vec2D v)
 {
 	// Move origin
-	*mOrigin += v;
+	mPos += v;
 
 	// Move all IK controllers to match
-	// This way, IK segments act as children
-	mSpine->resetIK();
-	mLeftArm->resetIK();
-	mRightArm->resetIK();
-	mLeftLeg->resetIK();
-	mRightLeg->resetIK();
+	FOR_ALL_LIMBS(mGoal += v);
+
+	// Calculate IK
+	FOR_ALL_LIMBS(calcFK());
 }

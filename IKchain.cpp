@@ -3,7 +3,7 @@
 #include "glut.h"
 #include "glui.h"
 
-IKchain::IKchain(void)
+IKchain::IKchain()
 	:
 	mOrigin(new vec2D(0,0)),
 	mMagnitude(DEFAULT_MAG)
@@ -65,6 +65,18 @@ IKchain::calcFK()
 
 	mPositions[M].x() = x;
 	mPositions[M].y() = y;
+}
+
+void IKchain::calcIK()
+{
+	int i=0;
+	double goalDistance = MAX_IK_DISTANCE+1;
+
+	while(goalDistance > MAX_IK_DISTANCE)// && i < MAX_IK_ITERS)
+	{
+		goalDistance = doIKStep();
+		i++;
+	}
 }
 
 #define ROW_MAJOR(x,y,w) x*w+y
@@ -173,8 +185,8 @@ IKchain::doIKStep()
 	double gY = mGoal.y();
 
 	// Calculate G - X
-	double eX = mMagnitude * (gX - mPositions[M].x());
-	double eY = mMagnitude * (gY - mPositions[M].y());
+	double eX = gX - mPositions[M].x();
+	double eY = gY - mPositions[M].y();
 
 	// Do we need to do a step?
 	double delta = sqrt(eX*eX+eY*eY);
