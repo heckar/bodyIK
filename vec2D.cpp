@@ -8,12 +8,14 @@ vec2D::vec2D(double ix, double iy)
 
 vec2D& vec2D::operator+(const vec2D &rhs)
 {
-	return vec2D(mX+rhs.mX,mY+rhs.mY);
+	vec2D *result = new vec2D(mX+rhs.mX,mY+rhs.mY);
+	return *result;
 }
 
 vec2D& vec2D::operator-(const vec2D &rhs)
 {
-	return vec2D(mX-rhs.mX,mY-rhs.mY);
+	vec2D *result = new vec2D(mX-rhs.mX,mY-rhs.mY);
+	return *result;
 }
 
 vec2D& vec2D::operator=(const vec2D &rhs)
@@ -34,10 +36,12 @@ vec2D& vec2D::operator+=(const vec2D &rhs)
 
 vec2D& vec2D::operator*(const double &rhs)
 {
-	return vec2D(mX*rhs,mY*rhs);
+	vec2D *result = new vec2D(mX*rhs,mY*rhs);
+	return *result;
 }
 
 vec2D& vec2D::operator/(const double &rhs)
 {
-	return vec2D(mX/rhs,mY/rhs);
+	vec2D *result = new vec2D(mX/rhs,mY/rhs);
+	return *result;
 }
