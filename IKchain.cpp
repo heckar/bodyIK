@@ -235,15 +235,9 @@ IKchain::drawGL()
 	vec2D ellipseCenter;
 
 	// Draw arm
-	double totalRotation = 0;
 	for(unsigned int i=0; i<M; i++)
 	{
-		totalRotation += mSegments[i].mTheta;
-		ellipseCenter = (mPositions[i] + mPositions[i+1].x()) * 0.5;
-		drawEllipse(ellipseCenter,
-					mSegments[i].mLength,
-					mSegments[i].mWidth,
-					totalRotation);
+		mBodyParts[i].drawGL();
 	}
 
 	// Draw pins
@@ -265,7 +259,19 @@ IKchain::drawGL()
 	glEnd();
 }
 
-void IKchain::drawEllipse(vec2D center, double length, double width, double rot)
+void IKchain::moveBodyParts()
 {
+	unsigned int M = numSegments();
 
+	vec2D ellipseCenter;
+	double totalRotation = 0;
+
+	for(unsigned int i=0; i<M; i++)
+	{
+		ellipseCenter = (mPositions[i] + mPositions[i+1]) * 0.5;
+		totalRotation += mSegments[i].mTheta;
+
+		mBodyParts[i].moveTo(ellipseCenter);
+		mBodyParts[i].rotateTo(totalRotation);
+	}
 }

@@ -11,6 +11,11 @@ vec2D& vec2D::operator+(const vec2D &rhs)
 	return vec2D(mX+rhs.mX,mY+rhs.mY);
 }
 
+vec2D& vec2D::operator-(const vec2D &rhs)
+{
+	return vec2D(mX-rhs.mX,mY-rhs.mY);
+}
+
 vec2D& vec2D::operator=(const vec2D &rhs)
 {
 	mX = rhs.mX;

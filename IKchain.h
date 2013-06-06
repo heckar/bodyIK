@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "vec2D.h"
+#include "Ellipse.h"
 
 #define MAX_IK_DISTANCE 1.0
 #define MAX_IK_ITERS 50
@@ -32,19 +33,23 @@ public:
 	IKchain(vec2D *origin);
 	~IKchain();
 
-	inline void recalcPositions() { calcFK(); }
+	inline void recalcPositions() { calcFK(); moveBodyParts(); }
 	inline void update() { doIKStep(); }
 	inline unsigned int numSegments() { return mSegments.size(); }
 	inline void setGoal(vec2D goal) { mGoal=goal; }
 	inline void addSegment(double length, double theta, double width)
 	{ 
 		IKsegment seg(length,theta,width); 
+		EllipseObject part(vec2D(),length,width);
+
 		mSegments.push_back(seg); 
 		mPositions.push_back(vec2D());
+		mBodyParts.push_back(part);
 	}
 	inline void resetIK()
 	{
 		calcFK();
+		moveBodyParts();
 		mGoal = mPositions[numSegments()];
 	}
 
@@ -53,6 +58,7 @@ public:
 private:
 
 	std::vector<IKsegment> mSegments;
+	std::vector<EllipseObject> mBodyParts;
 	std::vector<vec2D> mPositions;
 
 	vec2D *mOrigin;
@@ -67,5 +73,7 @@ private:
 	void calcPseudoInverse(double *J, double *out);
 	double calcError(double dpX, double dpY, double *J, double *JPI);
 	double doIKStep();
+
+	void moveBodyParts();
 };
 

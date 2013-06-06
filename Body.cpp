@@ -20,39 +20,39 @@ Body::Body()
 
 	// Create skeleton!
 	mSpine = new IKchain(&mPos);
-	mSpine->addSegment(20.0,M_PI/2.0);
-	mSpine->addSegment(20.0,0);
-	mSpine->addSegment(20.0,0);
-	mSpine->addSegment(30.0,0);
+	mSpine->addSegment(20.0,M_PI/2.0,20.0);
+	mSpine->addSegment(20.0,0,20.0);
+	mSpine->addSegment(20.0,0,20.0);
+	mSpine->addSegment(30.0,0,20.0);
 	mSpine->resetIK();
 
 	// Arms are children of the 3rd spine link
 	mLeftArm = new IKchain(&mSpine->mPositions[3]);
-	mLeftArm->addSegment(40.0,-M_PI);
-	mLeftArm->addSegment(70.0,M_PI/2.0);
-	mLeftArm->addSegment(70.0,-M_PI/6.0);
-	mLeftArm->addSegment(10.0,-M_PI/6.0);
+	mLeftArm->addSegment(40.0,-M_PI,20.0);
+	mLeftArm->addSegment(70.0,M_PI/2.0,20.0);
+	mLeftArm->addSegment(70.0,-M_PI/6.0,20.0);
+	mLeftArm->addSegment(10.0,-M_PI/6.0,20.0);
 	mLeftArm->resetIK();
 
 	mRightArm = new IKchain(&mSpine->mPositions[3]);
-	mRightArm->addSegment(40.0,0.0);
-	mRightArm->addSegment(70.0,-M_PI/2.0);
-	mRightArm->addSegment(70.0,M_PI/6.0);
-	mRightArm->addSegment(10.0,M_PI/6.0);
+	mRightArm->addSegment(40.0,0.0,20.0);
+	mRightArm->addSegment(70.0,-M_PI/2.0,20.0);
+	mRightArm->addSegment(70.0,M_PI/6.0,20.0);
+	mRightArm->addSegment(10.0,M_PI/6.0,20.0);
 	mRightArm->resetIK();
 
 	mLeftLeg = new IKchain(&mPos);
-	mLeftLeg->addSegment(20.0,-M_PI/4.0);
-	mLeftLeg->addSegment(70.0,-M_PI/4.0);
-	mLeftLeg->addSegment(70.0,0.0);
-	mLeftLeg->addSegment(10.0,M_PI/4.0);
+	mLeftLeg->addSegment(20.0,-M_PI/4.0,20.0);
+	mLeftLeg->addSegment(70.0,-M_PI/4.0,20.0);
+	mLeftLeg->addSegment(70.0,0.0,20.0);
+	mLeftLeg->addSegment(10.0,M_PI/4.0,20.0);
 	mLeftLeg->resetIK();
 
 	mRightLeg = new IKchain(&mPos);
-	mRightLeg->addSegment(20.0,-M_PI/2.0 - M_PI/4.0);
-	mRightLeg->addSegment(70.0,M_PI/4.0);
-	mRightLeg->addSegment(70.0,0.0);
-	mRightLeg->addSegment(10.0,-M_PI/4.0);
+	mRightLeg->addSegment(20.0,-M_PI/2.0 - M_PI/4.0,20.0);
+	mRightLeg->addSegment(70.0,M_PI/4.0,20.0);
+	mRightLeg->addSegment(70.0,0.0,20.0);
+	mRightLeg->addSegment(10.0,-M_PI/4.0,20.0);
 	mRightLeg->resetIK();
 }
 
@@ -90,4 +90,5 @@ void Body::translate(vec2D v)
 
 	// Calculate IK
 	FOR_ALL_LIMBS(calcFK());
+	FOR_ALL_LIMBS(moveBodyParts());
 }

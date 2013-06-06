@@ -8,6 +8,7 @@
 
 #include "PhyObject.h"
 #include "Body.h"
+#include "Ellipse.h"
 
 int	main_window;
 
@@ -26,6 +27,7 @@ double at[3]  = {0.0,0.0,0};
 double up[3]  = {0.0,1.0,0.0};
 
 Body *mBody;
+EllipseObject *mGround;
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -39,7 +41,7 @@ void reset()
 	winHeight = 1024;
 
 	mBody = new Body();
-	mBody->accelerate(vec2D(0,G_ACC));
+	//mBody->accelerate(vec2D(0,G_ACC));
 }
 
 void setCamera() 
