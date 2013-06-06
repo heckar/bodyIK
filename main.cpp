@@ -35,8 +35,8 @@ Body *mBody;
 
 void reset() 
 {
-	winWidth = 512;
-	winHeight = 512;
+	winWidth = 1024;
+	winHeight = 1024;
 
 	mBody = new Body();
 	mBody->accelerate(vec2D(0,G_ACC));
@@ -69,7 +69,6 @@ void myGlutIdle(void)
 
 
 // mouse handling functions for the main window
-// left mouse translates, middle zooms, right rotates
 // keep track of which button is down and where the last position was
 int cur_button = -1;
 int last_x;

@@ -11,6 +11,8 @@ public:
 	inline double &y() { return mY; }
 
 	 vec2D& operator+(const vec2D &rhs); 
+	 vec2D& operator*(const double &rhs); 
+	 vec2D& operator/(const double &rhs); 
 	 vec2D& operator=(const vec2D &rhs); 
 	 vec2D& operator+=(const vec2D &rhs); 
 

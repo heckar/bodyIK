@@ -26,3 +26,13 @@ vec2D& vec2D::operator+=(const vec2D &rhs)
 	
 	return *this;
 }
+
+vec2D& vec2D::operator*(const double &rhs)
+{
+	return vec2D(mX*rhs,mY*rhs);
+}
+
+vec2D& vec2D::operator/(const double &rhs)
+{
+	return vec2D(mX/rhs,mY/rhs);
+}

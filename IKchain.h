@@ -12,13 +12,15 @@ class IKchain;
 
 struct IKsegment
 {
-	IKsegment(double l=10, double t=0)
+	IKsegment(double l=10, double t=0, double w=5)
 	{
 		mLength=l;
 		mTheta=t;
+		mWidth=w;
 	}
 	double mLength;
 	double mTheta;
+	double mWidth;
 };
 
 class IKchain
@@ -34,11 +36,9 @@ public:
 	inline void update() { doIKStep(); }
 	inline unsigned int numSegments() { return mSegments.size(); }
 	inline void setGoal(vec2D goal) { mGoal=goal; }
-	inline void addSegment(double length, double theta)
+	inline void addSegment(double length, double theta, double width)
 	{ 
-		IKsegment seg; 
-		seg.mLength = length; 
-		seg.mTheta = theta; 
+		IKsegment seg(length,theta,width); 
 		mSegments.push_back(seg); 
 		mPositions.push_back(vec2D());
 	}

@@ -232,20 +232,19 @@ IKchain::drawGL()
 {
 	unsigned int M = numSegments();
 
-	// Draw arm
-	glLineWidth(5.0);
-	glBegin(GL_LINES);
-	{
-		for(unsigned int i=0; i<M; i++)
-		{
-			glColor3f(0.0,0.8,0.0);
-			glVertex3f(mPositions[i].x(),mPositions[i].y(),0);
+	vec2D ellipseCenter;
 
-			glColor3f(0,0,0);
-			glVertex3f(mPositions[i+1].x(),mPositions[i+1].y(),0);
-		}
+	// Draw arm
+	double totalRotation = 0;
+	for(unsigned int i=0; i<M; i++)
+	{
+		totalRotation += mSegments[i].mTheta;
+		ellipseCenter = (mPositions[i] + mPositions[i+1].x()) * 0.5;
+		drawEllipse(ellipseCenter,
+					mSegments[i].mLength,
+					mSegments[i].mWidth,
+					totalRotation);
 	}
-	glEnd();
 
 	// Draw pins
 	glPointSize(5.0);
@@ -264,4 +263,9 @@ IKchain::drawGL()
 	glBegin(GL_POINTS);
 		glVertex2f(mGoal.x(),mGoal.y());
 	glEnd();
+}
+
+void IKchain::drawEllipse(vec2D center, double length, double width, double rot)
+{
+
 }

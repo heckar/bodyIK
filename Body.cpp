@@ -76,6 +76,7 @@ void Body::update()
 	translate(mVel);
 	mVel += mAcc;
 
+	// Calculate IK controls
 	FOR_ALL_LIMBS(calcIK());
 }
 
