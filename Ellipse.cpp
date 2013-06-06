@@ -9,7 +9,10 @@
 EllipseObject::EllipseObject()
 {
 	mPos = vec2D();
+	mVel = 0;
+	mAcc = 0;
 	mRot = 0;
+	mRotVel = 0;
 
 	mLength = 5.0;
 	mWidth = 5.0;
@@ -21,7 +24,10 @@ EllipseObject::EllipseObject(vec2D center,
 				 double rotation)
 {
 	mPos = center;
+	mVel = 0;
+	mAcc = 0;
 	mRot = rotation;
+	mRotVel = 0;
 
 	mLength = length;
 	mWidth = width;

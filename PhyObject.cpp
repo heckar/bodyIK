@@ -1,10 +1,8 @@
 #include "PhyObject.h"
 
-
 PhyObject::PhyObject()
 {
 }
-
 
 PhyObject::~PhyObject()
 {
