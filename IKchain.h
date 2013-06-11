@@ -54,6 +54,7 @@ public:
 	}
 
 	void drawGL();
+	vec2D collide(EllipseObject*);
 
 private:
 

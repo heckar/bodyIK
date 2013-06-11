@@ -26,6 +26,8 @@ public:
 	inline void speedupRotationTo(double rot) { mRotVel = rot; }
 	inline void rotateTo(double rot) { mRot = rot; }
 
+	bool moveable;
+
 protected:
 	vec2D mPos;
 	vec2D mVel;

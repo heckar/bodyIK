@@ -28,6 +28,7 @@ double up[3]  = {0.0,1.0,0.0};
 
 Body *mBody;
 EllipseObject *mGround;
+std::vector<EllipseObject*> testProjectiles;
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -41,7 +42,38 @@ void reset()
 	winHeight = 1024;
 
 	mBody = new Body();
-	//mBody->accelerate(vec2D(0,G_ACC));
+	mBody->moveable=true;
+	//mBody->mLeftArm->setGoal(vec2D(-100,100));
+	mBody->accelerate(vec2D(0,G_ACC*0.01));
+	mGround = new EllipseObject(vec2D(-10,-195),2000,5,0);
+	mGround->moveable=false;
+	testProjectiles.push_back(mGround);
+	
+	mGround = new EllipseObject(vec2D(-450,305),1000,5,M_PI/2.0);
+	mGround->moveable=false;
+	testProjectiles.push_back(mGround);
+
+	mGround = new EllipseObject(vec2D(450,305),1000,5,M_PI/2.0);
+	mGround->moveable=false;
+	testProjectiles.push_back(mGround);
+	
+/*
+	EllipseObject *testObj;
+	testObj =new EllipseObject(vec2D(-100,110),20,10,2);
+	testObj->accelerate(vec2D(0,G_ACC*0.01));
+	testObj->speedupTo(vec2D(2,0));
+	testProjectiles.push_back(testObj);
+
+	testObj =new EllipseObject(vec2D(100,0),20,10,2);
+	testObj->accelerate(vec2D(0,G_ACC*0.01));
+	testObj->speedupTo(vec2D(-2,0));
+	testProjectiles.push_back(testObj);
+
+	testObj =new EllipseObject(vec2D(-3,140),20,10,2);
+	testObj->accelerate(vec2D(0,G_ACC*0.01));
+	testObj->speedupTo(vec2D(0,0));
+	testProjectiles.push_back(testObj);	*/
+
 }
 
 void setCamera() 
@@ -171,8 +203,22 @@ void myGlutDisplay(	void )
 
 	// Draw the polygon, as its plotted or the clipped polygon after 6 points
 	// and the viewport have been defined
-	mBody->drawGL();
 
+	for(int x=0;x<testProjectiles.size();x++)
+		mBody->collide(testProjectiles[x]);
+	
+	for(int x=0;x<testProjectiles.size();x++)
+		for(int y=0;y<testProjectiles.size();y++)
+			if(x !=y )
+				testProjectiles[x]->collide(testProjectiles[y]);
+	
+	//testProjectiles[1]->collide(testProjectiles[0]);
+	
+	for(int x=0;x<testProjectiles.size();x++)
+		testProjectiles[x]->drawGL();
+
+	mBody->drawGL();
+	
 	// Draw the IK chains
 
 	// Execute any GL functions that are in the queue.
@@ -187,11 +233,12 @@ void myGlutTimer(int t)
 {
 	// Update IK movement
 	mBody->update();
-
+	for(int x=0;x<testProjectiles.size();x++)
+		testProjectiles[x]->update();
 	//mBody->translate(vec2D(0,0.5));
 
 	// Reset timer
-	glutTimerFunc(100, myGlutTimer, 0);
+	glutTimerFunc(0.1, myGlutTimer, 0);
 }
 
 // some controls generate a callback when they are changed

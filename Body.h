@@ -11,6 +11,7 @@ public:
 
 	void drawGL();
 	void update();
+	void collide(EllipseObject*);
 
 	void translate(vec2D v);
 
